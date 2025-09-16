@@ -337,6 +337,8 @@ void setup() {
 
     Serial.print("ESP32 SDK: "); Serial.println(ESP.getSdkVersion());
     Serial.print("ESP32 DEVICE: "); Serial.println(GetDeviceHardwareRevision());
+    Serial.print("ESP32 CHIP ID: "); Serial.println((uint32_t)ESP.getEfuseMac(), HEX);
+    Serial.print("ESP32 CPU CORES: "); Serial.println(ESP.getChipCores());
     Serial.print("ESP32 CPU FREQ: "); Serial.print(getCpuFrequencyMhz()); Serial.println(" MHz");
     Serial.print("ESP32 XTAL FREQ: "); Serial.print(getXtalFrequencyMhz()); Serial.println(" MHz");
     Serial.print("ESP32 APB FREQ: "); Serial.print(getApbFrequency() / 1000000.0, 1); Serial.println(" MHz");
@@ -350,6 +352,17 @@ void setup() {
     Serial.print("ESP32 FREE RAM: "); Serial.print(ESP.getFreeHeap() / 1024.0, 2); Serial.println(" KB");
     Serial.print("ESP32 MAX RAM ALLOC: "); Serial.print(ESP.getMaxAllocHeap() / 1024.0, 2); Serial.println(" KB");
     Serial.print("ESP32 FREE PSRAM: "); Serial.print(ESP.getFreePsram() / 1024.0, 2); Serial.println(" KB");
+    Serial.print("ESP32 TOTAL PSRAM: "); Serial.print(ESP.getPsramSize() / 1024.0, 2); Serial.println(" KB");
+
+    // Print MAC address
+    uint8_t mac[6];
+    esp_read_mac(mac, ESP_MAC_WIFI_STA);
+    Serial.print("ESP32 MAC: ");
+    for (int i = 0; i < 6; i++) {
+      if (i > 0) Serial.print(":");
+      Serial.print(mac[i], HEX);
+    }
+    Serial.println();
 }
 
 void loop() {
